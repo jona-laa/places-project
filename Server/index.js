@@ -8,7 +8,7 @@ const data = [
   {
     id: "0",
     name: "YUC! Mexican",
-    imgURL: 'images/Yuc.jpg',
+    imgURL: '/images/Yuc.jpg',
     address: {
       street: "Norrtullsgatan 15",
       zip: "11327",
@@ -32,7 +32,7 @@ const data = [
   {
     id: "1",
     name: "First Hotel Kungsbron",
-    imgURL: 'images/FirstHotel.jpeg',
+    imgURL: '/images/FirstHotel.jpeg',
 
     address: {
       street: "Västra Järnvägsgatan 17",
@@ -56,7 +56,7 @@ const data = [
   {
     id: "2",
     name: "HaQ Stockholm",
-    imgURL: 'images/HaQ.jpg',
+    imgURL: '/images/HaQ.jpg',
 
     address: {
       street: "Västra Järnvägsgatan 11",
