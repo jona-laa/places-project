@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Place = require('../models/place');
+const { getPlace } = require('./middleware');
+
 
 // get all places
 router.get('/places', async (req, res) => {
@@ -32,5 +34,15 @@ router.post('/places', async (req, res) => {
   }
 
 });
+
+// delete one place
+router.delete('/places/:id', getPlace, async (req, res) => {
+  try {
+    await res.place.remove()
+    res.json({ message: 'Deleted This Place' })
+  } catch(err) {
+    res.status(500).json({ message: err.message })
+  }
+})
 
 module.exports = router;

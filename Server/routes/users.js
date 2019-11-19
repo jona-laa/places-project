@@ -1,0 +1,44 @@
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+
+const { getUser } = require('./middleware');
+
+// get all users
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+});
+
+// create one user
+router.post('/users', async (req, res) => {
+  const user = new User({
+    name: req.body.name,
+    contactInfo: req.body.contactInfo,
+    status: req.body.status,
+  })
+
+  try {
+    const newUser = await user.save()
+    res.status(201).json(newUser)
+  } catch (err) {
+    res.status(400).json({ message: err.message })
+  }
+
+});
+
+// delete one user
+router.delete('/users/:id', getUser, async (req, res) => {
+    try {
+      await res.user.remove()
+      res.json({ message: 'Deleted This User' })
+    } catch(err) {
+      res.status(500).json({ message: err.message })
+    }
+  })
+
+module.exports = router;

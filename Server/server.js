@@ -17,4 +17,7 @@ app.use(express.json())
 const placesRouter = require('./routes/places')
 app.use('/api', placesRouter)
 
+const usersRouter = require('./routes/users')
+app.use('/api', usersRouter)
+
 app.listen(3000, () => console.log('server started'))
