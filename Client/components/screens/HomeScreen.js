@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Card from '../Card';
-import { bold } from 'ansi-colors';
 
 const HomeScreen = () => {
 
   const [list, setList] = useState(null);
 
-  const baseUrl = 'http://192.168.35.146:8080';
+  const baseUrl = 'http://192.168.35.146:3000';
 
   const fetchList = () => {
-    fetch(`${baseUrl}/api/restaurants`)
+    fetch(`${baseUrl}/api/places`)
       .then(res => res.json())
       .then(data => setList(data))
       .catch(err => console.log(err))
@@ -28,14 +27,13 @@ const HomeScreen = () => {
           Available Places
       </Text>
       </View>
-      <View>
 
-        {list ? <FlatList
-          data={list}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => <Card url={baseUrl} place={item} />} />
-          : <Text>no data yet</Text>}
-      </View>
+      {list ? <FlatList
+        showsVerticalScrollIndicator={false}
+        data={list}
+        keyExtractor={item => item._id}
+        renderItem={({ item }) => <Card url={baseUrl} place={item} />} />
+        : <Text>no data yet</Text>}
     </View>
   )
 };
@@ -46,6 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight + 10,
     alignItems: 'center',
+    width: Dimensions.get('window').width
   },
   heading: {
     fontSize: 30,
@@ -53,6 +52,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingLeft: 30,
     paddingTop: 30,
+    paddingBottom: 15,
   },
   headingText: {
     width: Dimensions.get('window').width

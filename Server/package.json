@@ -1,17 +1,17 @@
 {
-  "name": "PlacesBackend",
+  "name": "Server",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "LTE4",
   "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
-  },
-  "scripts": {
-    "watch": "nodemon index.js"
+    "express": "^4.17.1",
+    "mongoose": "^5.7.11"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^1.19.4"
+  },
+  "scripts": {
+    "sandy": "nodemon server.js"
   }
 }
