@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Card from '../Card';
@@ -28,7 +28,6 @@ const HomeScreen = () => {
           Available Places
       </Text>
       </View>
-
       {places ? <FlatList
         showsVerticalScrollIndicator={false}
         data={places}

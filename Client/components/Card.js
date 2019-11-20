@@ -6,10 +6,8 @@ const Card = ({ place, url }) => {
   const imgURL = url + place.imgURL;
   
   const isOpen = () => {
-    const today = new Date();
-    const hours = today.getHours().toString().length < 2 ? `0${today.getHours()}` : today.getHours();
-    const minutes = today.getMinutes().toString().length < 2 ? `0${today.getMinutes()}` : today.getMinutes();
-    const currentTime = `${hours}:${minutes}`;
+    const date = new Date().toString();
+    const currentTime = date.match(/\d{2}:\d{2}(?=:)/).join();
     return place.hours.opens < currentTime && place.hours.closes > currentTime
   }
 

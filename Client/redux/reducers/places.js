@@ -1,7 +1,7 @@
 // Initial state
 const initState = {
-    places: []
-  }
+  places: []
+}
   
   
   export const placeReducer = (state = initState, action) => {

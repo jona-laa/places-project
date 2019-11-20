@@ -42,8 +42,8 @@ router.post('/places', async (req, res) => {
 // delete one place
 router.delete('/places/:id', getPlace, async (req, res) => {
   try {
-    await res.place.remove()
-    res.json({ message: 'Deleted This Place' })
+    const removedPlace = await res.place.remove()
+    res.json(removedPlace)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
