@@ -14,13 +14,18 @@ router.get('/places', async (req, res) => {
   }
 });
 
+// get one place
+router.get('/places/:id', getPlace, async (req, res) => {
+  res.json(res.place)
+});
+
 // create one place
 router.post('/places', async (req, res) => {
   const place = new Place({
     name: req.body.name,
     imgURL: req.body.imgURL,
     address: req.body.address,
-    hours:req.body.hours,
+    hours: req.body.hours,
     info: req.body.info,
     capacity: req.body.capacity,
     currentUsers: req.body.currentUsers
@@ -32,7 +37,6 @@ router.post('/places', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
-
 });
 
 // delete one place
@@ -40,9 +44,29 @@ router.delete('/places/:id', getPlace, async (req, res) => {
   try {
     await res.place.remove()
     res.json({ message: 'Deleted This Place' })
-  } catch(err) {
+  } catch (err) {
     res.status(500).json({ message: err.message })
   }
+})
+
+// update current users per place
+router.patch('/places/:id', getPlace, async (req, res) => {
+  
+  if (req.body.status.isCheckedIn === true) {
+    res.place.currentUsers = res.place.currentUsers + 1;
+  }
+
+  if (req.body.status.isCheckedIn === false) {
+    res.place.currentUsers = res.place.currentUsers - 1;
+  }
+
+  try {
+    const updatedPlace = await res.place.save()
+    res.json(updatedPlace)
+  } catch {
+    res.status(400).json({ message: err.message })
+  }
+
 })
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 
 
 const Card = ({ place, url }) => {
@@ -7,7 +7,9 @@ const Card = ({ place, url }) => {
   
   const isOpen = () => {
     const today = new Date();
-    const currentTime = `${today.getHours()}:${today.getMinutes()}`;
+    const hours = today.getHours().toString().length < 2 ? `0${today.getHours()}` : today.getHours();
+    const minutes = today.getMinutes().toString().length < 2 ? `0${today.getMinutes()}` : today.getMinutes();
+    const currentTime = `${hours}:${minutes}`;
     return place.hours.opens < currentTime && place.hours.closes > currentTime
   }
 

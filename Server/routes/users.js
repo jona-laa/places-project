@@ -14,6 +14,11 @@ router.get('/users', async (req, res) => {
   }
 });
 
+// get one user
+router.get('/users/:id', getUser, async (req, res) => {
+  res.json(res.user)
+});
+
 // create one user
 router.post('/users', async (req, res) => {
   const user = new User({
@@ -28,17 +33,16 @@ router.post('/users', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
-
 });
 
 // delete one user
 router.delete('/users/:id', getUser, async (req, res) => {
-    try {
-      await res.user.remove()
-      res.json({ message: 'Deleted This User' })
-    } catch(err) {
-      res.status(500).json({ message: err.message })
-    }
-  })
+  try {
+    await res.user.remove()
+    res.json({ message: 'Deleted This User' })
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
 
 module.exports = router;
