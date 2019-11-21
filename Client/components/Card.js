@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useSelector } from 'react-redux';
 
 const Card = ({ place, url }) => {
@@ -12,10 +12,12 @@ const Card = ({ place, url }) => {
     return place.hours.opens < currentTime && place.hours.closes > currentTime
   }
 
-  const coordSum = Number(place.address.longitude) + Number(place.address.latitude);
-
+  const toggleDetailView = () => {
+    console.log(place.distance)
+  }
 
   return (
+    <TouchableOpacity activeOpacity={0.9} onPress={() => toggleDetailView()}>
     <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={styles.cardBackground}>
       <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(77,115,79,0.8)' : 'rgba(223,129,135,0.5)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
       <Text style={styles.heading}>{place.name}</Text>
@@ -24,7 +26,9 @@ const Card = ({ place, url }) => {
       <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
       <Text style={styles.highlights}>{place.info.highlights.join(' · ')}</Text>
       <View style={styles.overlay} />
+      <TouchableOpacity title="Hello"></TouchableOpacity>
     </ImageBackground>
+    </TouchableOpacity>
   )
 }
 
