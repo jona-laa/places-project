@@ -51,7 +51,7 @@ router.delete('/places/:id', getPlace, async (req, res) => {
 
 // update current users per place
 router.patch('/places/:id', getPlace, async (req, res) => {
-  
+
   if (req.body.status.isCheckedIn === true) {
     res.place.currentUsers = res.place.currentUsers + 1;
   }

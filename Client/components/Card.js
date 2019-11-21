@@ -1,26 +1,30 @@
 import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
-
+import { useSelector } from 'react-redux';
 
 const Card = ({ place, url }) => {
+  const { location } = useSelector(state => state.location);
   const imgURL = url + place.imgURL;
-  
+
   const isOpen = () => {
     const date = new Date().toString();
     const currentTime = date.match(/\d{2}:\d{2}(?=:)/).join();
     return place.hours.opens < currentTime && place.hours.closes > currentTime
   }
 
+  const coordSum = Number(place.address.longitude) + Number(place.address.latitude);
+
+
   return (
-      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={styles.cardBackground}>
-        <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(77,115,79,0.8)' : 'rgba(223,129,135,0.5)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
-        <Text style={styles.heading}>{place.name}</Text>
-        <Text style={styles.address}>{place.address.street}</Text>
-        <Text style={styles.membersHere}>Members here</Text>
-        <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
-        <Text style={styles.highlights}>{place.info.highlights.join(' · ')}</Text>
-        <View style={styles.overlay} />
-      </ImageBackground>
+    <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={styles.cardBackground}>
+      <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(77,115,79,0.8)' : 'rgba(223,129,135,0.5)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
+      <Text style={styles.heading}>{place.name}</Text>
+      <Text style={styles.address}>{place.address.street}</Text>
+      <Text style={styles.membersHere}>Members here</Text>
+      <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
+      <Text style={styles.highlights}>{place.info.highlights.join(' · ')}</Text>
+      <View style={styles.overlay} />
+    </ImageBackground>
   )
 }
 

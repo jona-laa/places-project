@@ -7,6 +7,7 @@ import { placesToList } from '../../redux/actions/places';
 
 const HomeScreen = () => {
   const { places } = useSelector(state => state.places)
+  const { location } = useSelector(state => state.location)
   const dispatch = useDispatch();
   const baseUrl = 'http://192.168.35.146:3000';
 
@@ -21,6 +22,26 @@ const HomeScreen = () => {
     fetchList();
   }, [dispatch]);
 
+  const sortList = () => {
+    if (places.length) {
+      return places
+        .map(place => {
+          const coordSum = Number(place.address.longitude) + Number(place.address.latitude);
+          const distance = Math.abs(coordSum - location);
+          return { ...place, distance }
+        })
+        .sort((a, b) => {
+          if (a.distance > b.distance) {
+              return 1;
+          }
+          if (b.distance > a.distance) {
+              return -1;
+          }
+          return 0;
+      })
+    }
+  }
+
   return (
     <View style={styles.view}>
       <View style={styles.headingText}>
@@ -30,9 +51,9 @@ const HomeScreen = () => {
       </View>
       {places ? <FlatList
         showsVerticalScrollIndicator={false}
-        data={places}
+        data={sortList()}
         keyExtractor={item => item._id}
-        renderItem={({ item }) => <Card url={baseUrl} place={item} />} />
+        renderItem={({ item }) => <Card url={baseUrl} place={item} distance={sortList} />} />
         : <Text>no data yet</Text>}
     </View>
   )

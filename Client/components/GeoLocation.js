@@ -1,56 +1,47 @@
-import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
-import Constants from 'expo-constants';
+import React, { useEffect, useRef } from 'react';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateLocation, setErrorMessage } from '../redux/actions/location'
 
 const GeoLocation = () => {
-  const location = useSelector(state => state.location)
-  const place = useSelector(state => state.places)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    _getLocationAsync();
-  }, [])
+  // Update state every 5 seconds
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
 
-  const getCoordinates = async (street) => {
-    const coordinates = await Location.geocodeAsync(street);
-    const placeCoordAverage = coordinates[0].longitude + coordinates[0].latitude;
-    if (location.location) {
-      return placeCoordAverage - locationAverage()
-    }
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    useEffect(() => {
+      const tick = () => savedCallback.current();
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
   }
 
-  place.places.length ? place.places.map(async (place, index) => {
-    // console.log(index, place);
-    console.log(await getCoordinates(place.address.street));
-  }) : console.log('loading things');
+  useInterval(() => {
+    getLocationSum();
+  }, 500);
 
-  const _getLocationAsync = async () => {
+
+  // Sum of current position long + lat
+  const locationSum = (geo) => geo.coords.latitude + geo.coords.longitude;
+
+  // Updates state
+  const getLocationSum = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       dispatch(setErrorMessage('Permission to access location was denied'));
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-    //let location = await Location.reverseGeocodeAsync(geocode.coords);
-    dispatch(updateLocation({ location }))
+    let geoLocation = await Location.getCurrentPositionAsync({});
+    dispatch(updateLocation(locationSum(geoLocation)))
   };
-
-  const locationAverage = () => {
-    const lat = location.location.location.coords.latitude;
-    const long = location.location.location.coords.longitude;
-    return (long + lat);
-  }
-
-  location.location ? console.log(locationAverage()) : console.log('fetching')
 
   return null;
 }
-
-
-
-
 export default GeoLocation
