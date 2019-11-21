@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleCheckedIn } from '../redux/actions/checkedIn'
 
 const Card = ({ place, url }) => {
-  const { location } = useSelector(state => state.location);
+  const { checkedIn } = useSelector(state => state);
+  const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
 
   const isOpen = () => {
@@ -16,36 +18,110 @@ const Card = ({ place, url }) => {
     console.log(place.distance)
   }
 
+  const dispatchToggleCheckedIn = () => {
+    dispatch(toggleCheckedIn(checkedIn));
+    console.log(checkedIn);
+  }
+
+  const cardBackground = () => {
+    if (place.distance < 0.01) {
+      return {
+        width: Dimensions.get('window').width - 100,
+        height: Dimensions.get('window').width * 0.5 + 40,
+        marginTop: 25,
+        marginBottom: 25,
+        paddingTop: 10,
+        paddingRight: 16,
+        paddingBottom: 10,
+        paddingLeft: 16,
+      }
+    }
+    return {
+      width: Dimensions.get('window').width - 100,
+      height: Dimensions.get('window').width * 0.50,
+      marginTop: 25,
+      marginBottom: 25,
+      paddingTop: 10,
+      paddingRight: 16,
+      paddingBottom: 10,
+      paddingLeft: 16,
+    }
+  };
+
+  const highlights = () => {
+    if (place.distance < 0.01) {
+      return {
+        color: '#B6B6B6',
+        zIndex: 1,
+        fontSize: 8,
+        textAlign: 'center',
+        position: 'absolute',
+        bottom: 48,
+        left: 16,
+        width: '100%'
+      }
+    }
+    return {
+      color: '#B6B6B6',
+      zIndex: 1,
+      fontSize: 8,
+      textAlign: 'center',
+      position: 'absolute',
+      bottom: 13,
+      left: 16,
+      width: '100%'
+    }
+  }
+
+
+  const renderButton = () => {
+    if (place.distance < 0.01) {
+      return <TouchableOpacity style={styles.toggleCheckIn} activeOpacity={1} onPress={() => dispatchToggleCheckedIn()}>
+        <Text style={styles.toggleCheckIn_text}>{checkedIn ? 'Check Out' : 'Check In'}</Text>
+      </TouchableOpacity>
+    }
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={() => toggleDetailView()}>
-    <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={styles.cardBackground}>
-      <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(77,115,79,0.8)' : 'rgba(223,129,135,0.5)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
-      <Text style={styles.heading}>{place.name}</Text>
-      <Text style={styles.address}>{place.address.street}</Text>
-      <Text style={styles.membersHere}>Members here</Text>
-      <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
-      <Text style={styles.highlights}>{place.info.highlights.join(' · ')}</Text>
-      <View style={styles.overlay} />
-      <TouchableOpacity title="Hello"></TouchableOpacity>
-    </ImageBackground>
+    <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
+      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={cardBackground()}>
+        <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
+        <Text style={styles.heading}>{place.name}</Text>
+        <Text style={styles.address}>{place.address.street}</Text>
+        <Text style={styles.membersHere}>Members here</Text>
+        <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
+        <Text style={highlights()}>{place.info.highlights.join(' · ')}</Text>
+        <View style={styles.overlay} />
+        {renderButton()}
+      </ImageBackground>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  cardBackground: {
+  toggleCheckIn_text2: {
+    display: 'none'
+  },
+  toggleCheckIn_text: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    zIndex: 1
+  },
+  toggleCheckIn: {
+    backgroundColor: '#FA8993',
+    position: 'absolute',
+    bottom: 0,
     width: Dimensions.get('window').width - 100,
-    height: Dimensions.get('window').width * 0.50,
-    marginTop: 25,
-    marginBottom: 25,
-    paddingTop: 10,
-    paddingRight: 16,
-    paddingBottom: 10,
-    paddingLeft: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    padding: 10
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.75)',
     borderRadius: 12,
     zIndex: 0
   },
@@ -85,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   highlights: {
-    color: 'white',
+    color: '#B6B6B6',
     zIndex: 1,
     fontSize: 8,
     textAlign: 'center',
@@ -95,6 +171,5 @@ const styles = StyleSheet.create({
     width: '100%'
   }
 })
-
 
 export default Card

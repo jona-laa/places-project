@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingTop: 30,
     paddingBottom: 15,
+    color: '#4D4D4D'
   },
   headingText: {
     width: Dimensions.get('window').width
