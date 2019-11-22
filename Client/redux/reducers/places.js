@@ -9,7 +9,7 @@ export const placeReducer = (state = initState, action) => {
     case 'PLACES_TO_LIST':
       return {
         ...state,
-        places: state.places.concat(action.places)
+        places: action.places
       }
     default:
       return state;

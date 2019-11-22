@@ -31,11 +31,6 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: false
     }
-    // OR 
-    // place: {
-    //   type: mongoose.Schema.Types.ObjectId, 
-    //   ref: 'Places'
-    // }
   },
 })
 

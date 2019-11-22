@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleCheckedIn } from '../redux/actions/checkedIn'
+import { toggleCheckingIn } from '../redux/actions/checkingIn'
 
 const Card = ({ place, url }) => {
-  const { checkedIn } = useSelector(state => state);
+  const { checkingIn } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
+  const isNear = place.distance < 0.01;
 
   const isOpen = () => {
     const date = new Date().toString();
@@ -18,13 +19,28 @@ const Card = ({ place, url }) => {
     console.log(place.distance)
   }
 
-  const dispatchToggleCheckedIn = () => {
-    dispatch(toggleCheckedIn(checkedIn));
-    console.log(checkedIn);
+  const dispatchToggleCheckingIn = () => {
+    dispatch(toggleCheckingIn(checkingIn));
+    fetchPatch();
   }
 
+  const fetchPatch = () => {
+    fetch(`${url}/api/places/${place._id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        status: {
+          isCheckedIn: checkingIn
+        }
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+  }
+
+
   const cardBackground = () => {
-    if (place.distance < 0.01) {
+    if (isNear) {
       return {
         width: Dimensions.get('window').width - 100,
         height: Dimensions.get('window').width * 0.5 + 40,
@@ -49,7 +65,7 @@ const Card = ({ place, url }) => {
   };
 
   const highlights = () => {
-    if (place.distance < 0.01) {
+    if (isNear) {
       return {
         color: '#B6B6B6',
         zIndex: 1,
@@ -75,9 +91,9 @@ const Card = ({ place, url }) => {
 
 
   const renderButton = () => {
-    if (place.distance < 0.01) {
-      return <TouchableOpacity style={styles.toggleCheckIn} activeOpacity={1} onPress={() => dispatchToggleCheckedIn()}>
-        <Text style={styles.toggleCheckIn_text}>{checkedIn ? 'Check Out' : 'Check In'}</Text>
+    if (isNear) {
+      return <TouchableOpacity style={styles.toggleCheckIn} activeOpacity={1} onPress={() => dispatchToggleCheckingIn()}>
+        <Text style={styles.toggleCheckIn_text}>{checkingIn ? 'Check In' : 'Check Out' }</Text>
       </TouchableOpacity>
     }
   }

@@ -7,9 +7,12 @@ import { placesToList } from '../../redux/actions/places';
 
 const HomeScreen = () => {
   const { places } = useSelector(state => state.places)
+  const { checkingIn } = useSelector(state => state)
   const { location } = useSelector(state => state.location)
   const dispatch = useDispatch();
   const baseUrl = 'http://192.168.35.146:3000';
+
+
 
   const fetchList = () => {
     fetch(`${baseUrl}/api/places`)
@@ -20,7 +23,8 @@ const HomeScreen = () => {
 
   useEffect(() => {
     fetchList();
-  }, [dispatch]);
+    sortList();
+  }, [dispatch, checkingIn]);
 
   const sortList = () => {
     if (places.length) {
@@ -32,15 +36,16 @@ const HomeScreen = () => {
         })
         .sort((a, b) => {
           if (a.distance > b.distance) {
-              return 1;
+            return 1;
           }
           if (b.distance > a.distance) {
-              return -1;
+            return -1;
           }
           return 0;
-      })
+        })
     }
   }
+
 
   return (
     <View style={styles.view}>
@@ -52,6 +57,8 @@ const HomeScreen = () => {
       {places ? <FlatList
         showsVerticalScrollIndicator={false}
         data={sortList()}
+        extraData={checkingIn}
+        refreshing={true}
         keyExtractor={item => item._id}
         renderItem={({ item }) => <Card url={baseUrl} place={item} distance={sortList} />} />
         : <Text>no data yet</Text>}
