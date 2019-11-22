@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn'
 
-const Card = ({ place, url }) => {
+const Card = ({ place, url, fetchList }) => {
   const { checkingIn } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
@@ -17,11 +17,20 @@ const Card = ({ place, url }) => {
 
   const toggleDetailView = () => {
     console.log(place.distance)
+    fetchList();
   }
+
+  const delayFetch = useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchList()
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const dispatchToggleCheckingIn = () => {
     dispatch(toggleCheckingIn(checkingIn));
     fetchPatch();
+    delayFetch;
   }
 
   const fetchPatch = () => {
@@ -37,7 +46,6 @@ const Card = ({ place, url }) => {
       }
     })
   }
-
 
   const cardBackground = () => {
     if (isNear) {
@@ -88,7 +96,6 @@ const Card = ({ place, url }) => {
       width: '100%'
     }
   }
-
 
   const renderButton = () => {
     if (isNear) {

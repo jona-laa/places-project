@@ -12,8 +12,6 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const baseUrl = 'http://192.168.35.146:3000';
 
-
-
   const fetchList = () => {
     fetch(`${baseUrl}/api/places`)
       .then(res => res.json())
@@ -46,7 +44,6 @@ const HomeScreen = () => {
     }
   }
 
-
   return (
     <View style={styles.view}>
       <View style={styles.headingText}>
@@ -60,12 +57,11 @@ const HomeScreen = () => {
         extraData={checkingIn}
         refreshing={true}
         keyExtractor={item => item._id}
-        renderItem={({ item }) => <Card url={baseUrl} place={item} distance={sortList} />} />
+        renderItem={({ item }) => <Card fetchList={fetchList} url={baseUrl} place={item} distance={sortList} />} />
         : <Text>no data yet</Text>}
     </View>
   )
 };
-
 
 const styles = StyleSheet.create({
   view: {

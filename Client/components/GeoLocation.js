@@ -28,7 +28,6 @@ const GeoLocation = () => {
     getLocationSum();
   }, 500);
 
-
   // Sum of current position long + lat
   const locationSum = (geo) => geo.coords.latitude + geo.coords.longitude;
 
