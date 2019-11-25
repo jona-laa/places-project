@@ -20,17 +20,10 @@ const Card = ({ place, url, fetchList }) => {
     fetchList();
   }
 
-  const delayFetch = useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchList()
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const dispatchToggleCheckingIn = () => {
     dispatch(toggleCheckingIn(checkingIn));
     fetchPatch();
-    delayFetch;
+    fetchList();
   }
 
   const fetchPatch = () => {
@@ -45,6 +38,7 @@ const Card = ({ place, url, fetchList }) => {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
+    
   }
 
   const cardBackground = () => {

@@ -20,4 +20,7 @@ app.use('/api', placesRouter)
 const usersRouter = require('./routes/users')
 app.use('/api', usersRouter)
 
+const pushRouter = require('./routes/push')
+app.use('/notifications', pushRouter)
+
 app.listen(3000, () => console.log('server started'))

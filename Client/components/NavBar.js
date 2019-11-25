@@ -5,7 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import FeedScreen from './screens/FeedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import InfoScreen from './screens/InfoScreen';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const TabNavigator = createBottomTabNavigator( // call function create navbar object
   {
@@ -18,21 +18,21 @@ const TabNavigator = createBottomTabNavigator( // call function create navbar ob
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let IconComponent = Ionicons;
+        let IconComponent = AntDesign;
         let iconName;
 
         switch (routeName) {
           case 'Home':
-            iconName = 'ios-home';
+            iconName = 'home';
             break;
           case 'Feed':
-            iconName = 'ios-chatbubbles';
+            iconName = 'wechat';
             break;
           case 'Profile':
-            iconName = 'ios-person';
+            iconName = 'user';
             break;
           case 'Info':
-            iconName = 'ios-information-circle-outline';
+            iconName = 'infocirlceo';
             break;
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />
