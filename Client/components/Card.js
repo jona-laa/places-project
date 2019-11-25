@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn'
@@ -100,7 +100,7 @@ const Card = ({ place, url, fetchList }) => {
   const renderButton = () => {
     if (isNear) {
       return <TouchableOpacity style={styles.toggleCheckIn} activeOpacity={1} onPress={() => dispatchToggleCheckingIn()}>
-        <Text style={styles.toggleCheckIn_text}>{checkingIn ? 'Check In' : 'Check Out' }</Text>
+        <Text style={styles.toggleCheckIn_text}>{checkingIn ? 'Check In' : 'Check Out'}</Text>
       </TouchableOpacity>
     }
   }
