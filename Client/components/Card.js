@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn'
 
 const Card = ({ place, url, fetchList }) => {
-  const { checkingIn } = useSelector(state => state);
+  const { checkingIn, expoPushToken } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
   const isNear = place.distance < 0.01;
@@ -23,7 +23,23 @@ const Card = ({ place, url, fetchList }) => {
   const dispatchToggleCheckingIn = () => {
     dispatch(toggleCheckingIn(checkingIn));
     fetchPatch();
+    checkinPush();
     fetchList();
+  }
+
+  const checkinPush = () => {
+    
+    fetch(`${url}/notifications/checkin`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: checkingIn ? `Checked In at ${place.name}` : `Checked Out from ${place.name}`,
+        key: expoPushToken
+      })
+    })
   }
 
   const fetchPatch = () => {
@@ -38,7 +54,6 @@ const Card = ({ place, url, fetchList }) => {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
-    
   }
 
   const cardBackground = () => {

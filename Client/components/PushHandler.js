@@ -8,7 +8,6 @@ import { setUserToken } from '../redux/actions/token'
 const baseUrl = 'http://192.168.35.146:3000';
 
 const PushHandler = () => {
-
   const state = useSelector(state => state)
   const dispatch = useDispatch();
 
@@ -53,22 +52,15 @@ const PushHandler = () => {
     })
   }
 
-
   useEffect(() => {
     console.log(state.expoPushToken)
     registerForPushNotificationsAsync();
     if (state.expoPushToken) {
       sendUserToken()
     }
-    // Handle notifications that are received or selected while the app is open. 
-    _notificationSubscription = Notifications.addListener(
-      _handleNotification
-    );
+
   }, [state.expoPushToken])
 
-  const _handleNotification = notification => {
-    setState({ notification: notification });
-  };
 
   return null;
 }

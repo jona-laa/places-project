@@ -16,7 +16,7 @@ const saveToken = (token) => {
   }
 }
 
-const handlePushTokens = (message) => {
+const handlePushTokens = (message, key) => {
   let notifications = [];
   for (let pushToken of savedPushTokens) {
     if (!Expo.isExpoPushToken(pushToken)) {
@@ -24,14 +24,17 @@ const handlePushTokens = (message) => {
       continue;
     }
 
-    notifications.push({
-      to: pushToken,
-      sound: 'default',
-      title: 'Test Notification!',
-      body: message,
-      data: { message }
-    })
+    if (pushToken === key) {
+      notifications.push({
+        to: pushToken,
+        sound: 'default',
+        title: 'Places',
+        body: message,
+        data: { message }
+      })
+    }
   }
+
 
   let chunks = expo.chunkPushNotifications(notifications);
 
@@ -53,14 +56,17 @@ router.get('/', (req, res) => {
 
 router.post('/token', (req, res) => {
   saveToken(req.body.token.value);
-  console.log(`Received push token, ${req.body.token.value}`);
   res.send(`Received push token, ${req.body.token.value}`);
 });
 
-router.post('/message', (req, res) => {
-  handlePushTokens(req.body.message);
-  console.log(`Received message, ${req.body.message}`);
-  res.send(`Received Calles message, ${req.body.message}`);
+router.post('/checkin', (req, res) => {
+  handlePushTokens(req.body.message, req.body.key);
+  res.send(`Received message, ${req.body.message}`);
+});
+
+router.post('/auto', (req, res) => {
+  handlePushTokens(req.body.message, req.body.key);
+  res.send(`Received message, ${req.body.message}`);
 });
 
 module.exports = router;
