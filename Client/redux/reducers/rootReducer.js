@@ -4,6 +4,8 @@ import { locationReducer } from './location';
 import { checkingInReducer } from './checkingIn';
 import { tokenReducer } from './token';
 import { notificationReducer } from './notifications';
+import { profileReducer } from './profile';
+
 
 // Root reducer - COMBINE REDUCERS
 export const rootReducer = combineReducers({
@@ -11,7 +13,8 @@ export const rootReducer = combineReducers({
     location: locationReducer,
     checkingIn: checkingInReducer,
     expoPushToken: tokenReducer,
-    notifications: notificationReducer
+    notifications: notificationReducer,
+    profile: profileReducer
 })
 
 

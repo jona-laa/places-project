@@ -5,7 +5,7 @@ const User = require('../models/user');
 const expo = new Expo();
 const { getUser } = require('./middleware');
 
-const handlePushTokens = async (message, key) => {
+const handlePushTokens = async (message, title, key) => {
   let notifications = [];
   const users = await User.find();
   for (let user of users) {
@@ -19,13 +19,12 @@ const handlePushTokens = async (message, key) => {
       notifications.push({
         to: pushToken,
         sound: 'default',
-        title: 'Places',
+        title: title,
         body: message,
-        data: { message }
+        data: { message, title }
       })
     }
   }
-
 
   let chunks = expo.chunkPushNotifications(notifications);
 
@@ -46,12 +45,12 @@ router.get('/', (req, res) => {
 });
 
 router.post('/checkin', (req, res) => {
-  handlePushTokens(req.body.message, req.body.key);
+  handlePushTokens(req.body.message, req.body.title, req.body.key);
   res.send(`Received message, ${req.body.message}`);
 });
 
 router.post('/auto', (req, res) => {
-  handlePushTokens(req.body.message, req.body.key);
+  handlePushTokens(req.body.message, req.body.title, req.body.key);
   res.send(`Received message, ${req.body.message}`);
 });
 

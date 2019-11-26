@@ -34,6 +34,7 @@ const Card = ({ place, url, fetchList }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          title: place.name,
           message: `${place.name} is closing in half an hour`,
           key: expoPushToken
         })
@@ -84,6 +85,7 @@ const Card = ({ place, url, fetchList }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        title: place.name,
         message: checkingIn ? `Checked In at ${place.name}` : `Checked Out from ${place.name}`,
         key: expoPushToken
       })
@@ -126,6 +128,7 @@ const Card = ({ place, url, fetchList }) => {
     }
   }
 
+  // ADD THE IS OPENS!!!!!!!
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
       <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={isNear && isOpen() ? styles.cardbackgroundNear : styles.cardbackgroundFar}>
