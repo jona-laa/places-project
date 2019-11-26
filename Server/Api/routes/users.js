@@ -46,8 +46,20 @@ router.delete('/users/:id', getUser, async (req, res) => {
 })
 
 //  add pushtoken to user
-router.patch('/users/:id', getUser, async (req, res) => {
+router.patch('/users/:id/token', getUser, async (req, res) => {
   res.user.pushToken = req.body.pushToken;
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+//  checkin user
+router.patch('/users/:id/checkin', getUser, async (req, res) => {
+  res.user.status.isCheckedIn = req.body.isCheckedIn;
+  res.user.status.place = req.body.place;
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)

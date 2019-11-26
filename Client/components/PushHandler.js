@@ -36,7 +36,7 @@ const PushHandler = () => {
   };
 
   const sendUserToken = () => {
-    fetch(`${baseUrl}/api/users/${userID}`, {
+    fetch(`${baseUrl}/api/users/${userID}/token`, {
       method: "PATCH",
       headers: {
         'Accept': 'application/json',
