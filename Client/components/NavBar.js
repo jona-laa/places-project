@@ -26,7 +26,7 @@ const TabNavigator = createBottomTabNavigator( // call function create navbar ob
             iconName = 'home';
             break;
           case 'Feed':
-            iconName = 'wechat';
+            iconName = 'message1';
             break;
           case 'Profile':
             iconName = 'user';
