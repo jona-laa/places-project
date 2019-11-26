@@ -27,7 +27,6 @@ const Card = ({ place, url, fetchList }) => {
     const hoursLeft = place.hours.closes.split(':')[0] - currentTime.split(':')[0]
     const minutesLeft = currentTime.split(':')[1] - place.hours.closes.split(':')[1]
     if (hoursLeft === 1 && minutesLeft === 30 && !checkingIn) {
-
       fetch(`${url}/notifications/auto`, {
         method: "POST",
         headers: {
@@ -120,7 +119,7 @@ const Card = ({ place, url, fetchList }) => {
   };
 
   const renderButton = () => {
-    if (isNear) {
+    if (isNear && isOpen()) {
       return <TouchableOpacity style={styles.toggleCheckIn} activeOpacity={1} onPress={() => dispatchToggleCheckingIn()}>
         <Text style={styles.toggleCheckIn_text}>{checkingIn ? 'Check In' : 'Check Out'}</Text>
       </TouchableOpacity>
@@ -129,13 +128,13 @@ const Card = ({ place, url, fetchList }) => {
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
-      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={isNear ? styles.cardbackgroundNear : styles.cardbackgroundFar}>
+      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={isNear && isOpen() ? styles.cardbackgroundNear : styles.cardbackgroundFar}>
         <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
         <Text style={styles.heading}>{place.name}</Text>
         <Text style={styles.address}>{place.address.street}</Text>
         <Text style={styles.membersHere}>Members here</Text>
         <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
-        <Text style={isNear ? styles.highlightsNear : styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>
+        <Text style={isNear && isOpen() ? styles.highlightsNear : styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>
         <View style={styles.overlay} />
         {renderButton()}
       </ImageBackground>
