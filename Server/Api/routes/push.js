@@ -1,24 +1,15 @@
 const express = require('express');
 const { Expo } = require('expo-server-sdk');
 const router = express.Router();
-
+const User = require('../models/user');
 const expo = new Expo();
+const { getUser } = require('./middleware');
 
-//THIS SHOULD BE A MONGO DB DOCUMENT L8R
-let savedPushTokens = [];
-//THIS SHOULD BE A MONGO DB DOCUMENT L8R
-
-const saveToken = (token) => {
-  console.log(savedPushTokens.indexOf(token) === -1)
-  console.log(savedPushTokens)
-  if (savedPushTokens.indexOf(token) === -1) {
-    savedPushTokens.push(token);
-  }
-}
-
-const handlePushTokens = (message, key) => {
+const handlePushTokens = async (message, key) => {
   let notifications = [];
-  for (let pushToken of savedPushTokens) {
+  const users = await User.find();
+  for (let user of users) {
+    const pushToken = user.pushToken;
     if (!Expo.isExpoPushToken(pushToken)) {
       console.error(`Push token ${pushToken} is not a valid Expo push token`);
       continue;
@@ -54,11 +45,6 @@ router.get('/', (req, res) => {
   res.send('Push Notification Server Running');
 });
 
-router.post('/token', (req, res) => {
-  saveToken(req.body.token.value);
-  res.send(`Received push token, ${req.body.token.value}`);
-});
-
 router.post('/checkin', (req, res) => {
   handlePushTokens(req.body.message, req.body.key);
   res.send(`Received message, ${req.body.message}`);
@@ -68,5 +54,7 @@ router.post('/auto', (req, res) => {
   handlePushTokens(req.body.message, req.body.key);
   res.send(`Received message, ${req.body.message}`);
 });
+
+
 
 module.exports = router;

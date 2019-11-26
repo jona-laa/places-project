@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserToken } from '../redux/actions/token'
 
 const baseUrl = 'http://192.168.35.146:3000';
+const userID = '5dd50ab87153751890c06087';
 
 const PushHandler = () => {
   const state = useSelector(state => state)
@@ -27,27 +28,22 @@ const PushHandler = () => {
         alert('Failed to get push token for push notification!');
         return;
       }
-
       let token = await Notifications.getExpoPushTokenAsync();
-
       dispatch(setUserToken(token));
-
     } else {
       alert('Must use physical device for Push Notifications');
     }
   };
 
   const sendUserToken = () => {
-    fetch(`${baseUrl}/notifications/token`, {
-      method: "POST",
+    fetch(`${baseUrl}/api/users/${userID}`, {
+      method: "PATCH",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: {
-          value: state.expoPushToken,
-        }
+        pushToken: state.expoPushToken,
       })
     })
   }
