@@ -3,7 +3,8 @@ import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserToken } from '../redux/actions/token'
+import { setUserToken } from '../redux/actions/token';
+import { setNotification } from '../redux/actions/notifications';
 
 const baseUrl = 'http://192.168.35.146:3000';
 const userID = '5dd50ab87153751890c06087';
@@ -49,14 +50,12 @@ const PushHandler = () => {
   }
 
   useEffect(() => {
-    console.log(state.expoPushToken)
     registerForPushNotificationsAsync();
+    Notifications.addListener(notification => dispatch(setNotification(notification)));
     if (state.expoPushToken) {
       sendUserToken()
     }
-
   }, [state.expoPushToken])
-
 
   return null;
 }
@@ -64,7 +63,7 @@ const PushHandler = () => {
 /*  TO GET PUSH RECEIPTS, RUN THE FOLLOWING COMMAND IN TERMINAL, WITH THE RECEIPTID SHOWN IN THE CONSOLE LOGS
  
     curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/getReceipts" -d '{
-      "ids": ["8890b090-ad0f-45b4-86c9-1d0fe5fa1d16"]
+      "ids": ["2dbe4795-c245-442e-ae91-21289ff509f7"]
       }'
  
     */

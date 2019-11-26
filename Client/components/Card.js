@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleCheckingIn } from '../redux/actions/checkingIn'
+import { toggleCheckingIn } from '../redux/actions/checkingIn';
 
 const Card = ({ place, url, fetchList }) => {
-  const { checkingIn, expoPushToken } = useSelector(state => state);
+  const { checkingIn, expoPushToken, notifications } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
   const isNear = place.distance < 0.01;
@@ -24,9 +24,10 @@ const Card = ({ place, url, fetchList }) => {
 
   const checkIfClosingSoon = () => {
     const currentTime = getCurrentTime()
-    const hoursLeft = currentTime.split(':')[0] - place.hours.closes.split(':')[0]
+    const hoursLeft = place.hours.closes.split(':')[0] - currentTime.split(':')[0]
     const minutesLeft = currentTime.split(':')[1] - place.hours.closes.split(':')[1]
-    if (hoursLeft === 1 && minutesLeft === 30 && checkingIn) {
+    if (hoursLeft === 1 && minutesLeft === 30 && !checkingIn) {
+
       fetch(`${url}/notifications/auto`, {
         method: "POST",
         headers: {
@@ -64,6 +65,7 @@ const Card = ({ place, url, fetchList }) => {
 
   const toggleDetailView = () => {
     console.log(place.distance)
+    console.log(notifications);
     fetchList();
   }
 
