@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn';
@@ -7,15 +7,15 @@ const Card = ({ place, url, fetchList }) => {
   const { checkingIn, expoPushToken, notifications } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
-  const isNear = place.distance < 0.01;
   const userID = '5dd50ab87153751890c06087';
+  const isNear = place.distance < 0.01
+  const [details, setDetails] = useState(false)
 
 
   const getCurrentTime = () => {
     const date = new Date().toString();
     return date.match(/\d{2}:\d{2}(?=:)/).join();
   }
-
 
   const isOpen = () => {
     const currentTime = getCurrentTime()
@@ -41,6 +41,7 @@ const Card = ({ place, url, fetchList }) => {
       })
     }
   }
+
   useInterval(() => {
     checkIfClosingSoon();
   }, 60000)
@@ -64,8 +65,7 @@ const Card = ({ place, url, fetchList }) => {
   }
 
   const toggleDetailView = () => {
-    console.log(place.distance)
-    console.log(notifications);
+    setDetails(!details)
     fetchList();
   }
 
@@ -128,16 +128,36 @@ const Card = ({ place, url, fetchList }) => {
     }
   }
 
-  // ADD THE IS OPENS!!!!!!!
+  const displayHighlights = () => {
+    if (details) {
+      return <Text style={styles.highlightsDetailed}> · {place.info.highlights.join('\n · ')}</Text>;
+    } else if (isNear && isOpen()) {
+      return <Text style={styles.highlightsNear}>{place.info.highlights.join(' · ')}</Text>;
+    } else {
+      return <Text style={styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>;
+    }
+  }
+
+  const toggleCardBackground = () => {
+    if (details) {
+      return styles.cardbackgroundDetailed;
+    } else if (isNear && isOpen()) {
+      return styles.cardbackgroundNear;
+    } else {
+      return styles.cardbackgroundFar;
+    }
+  }
+
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
-      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={isNear && isOpen() ? styles.cardbackgroundNear : styles.cardbackgroundFar}>
+      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={toggleCardBackground()}>
         <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
         <Text style={styles.heading}>{place.name}</Text>
         <Text style={styles.address}>{place.address.street}</Text>
         <Text style={styles.membersHere}>Members here</Text>
         <Text style={styles.capacity}>{place.currentUsers}/{place.capacity}</Text>
-        <Text style={isNear && isOpen() ? styles.highlightsNear : styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>
+        {details && (<Text style={styles.description}>{place.info.description}</Text>)}
+        {displayHighlights()}
         <View style={styles.overlay} />
         {renderButton()}
       </ImageBackground>
@@ -146,6 +166,16 @@ const Card = ({ place, url, fetchList }) => {
 }
 
 const styles = StyleSheet.create({
+  cardbackgroundDetailed: {
+    width: Dimensions.get('window').width - 100,
+    height: Dimensions.get('window').width * 0.5 + 200,
+    marginTop: 25,
+    marginBottom: 25,
+    paddingTop: 10,
+    paddingRight: 16,
+    paddingBottom: 10,
+    paddingLeft: 16,
+  },
   cardbackgroundNear: {
     width: Dimensions.get('window').width - 100,
     height: Dimensions.get('window').width * 0.5 + 40,
@@ -185,6 +215,15 @@ const styles = StyleSheet.create({
     bottom: 13,
     left: 16,
     width: '100%'
+  },
+  highlightsDetailed:
+  {
+    color: '#D1D1D1',
+    zIndex: 1,
+    fontSize: 14,
+    paddingTop: 15,
+    paddingHorizontal: 5,
+    lineHeight: 20
   },
   toggleCheckIn_text2: {
     display: 'none'
@@ -238,7 +277,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 11,
     fontWeight: 'bold',
-    paddingTop: 25
+    paddingTop: 15
   },
   capacity: {
     color: 'white',
@@ -247,15 +286,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  highlights: {
-    color: '#B6B6B6',
+
+  description: {
+    color: 'white',
     zIndex: 1,
-    fontSize: 8,
-    textAlign: 'center',
-    position: 'absolute',
-    bottom: 13,
-    left: 16,
-    width: '100%'
+    fontSize: 16,
+    paddingTop: 15,
+    paddingHorizontal: 5
   }
 })
 

@@ -17,8 +17,7 @@ const FeedCard = ({ data: { item: { data: { message, title } } } }) => {
 const styles = StyleSheet.create({
   wrapper: {
     paddingBottom: 30,
-    paddingTop: 23,
-    paddingLeft: 10,
+    paddingTop: 30,
     borderBottomWidth: 0.5,
     width: Dimensions.get('window').width - 40,
     flexDirection: 'row'
@@ -26,10 +25,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '600',
     paddingBottom: 10,
-    paddingLeft: 10
+    paddingLeft: 15
   },
   message: {
-    paddingLeft: 10
+    paddingLeft: 15
   },
   iconBg:
   {
