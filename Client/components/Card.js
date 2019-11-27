@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, Modal } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn';
 
 const Card = ({ place, url, fetchList }) => {
-  const { checkingIn, expoPushToken, notifications } = useSelector(state => state);
+  const { checkingIn, expoPushToken } = useSelector(state => state);
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
   const userID = '5dd50ab87153751890c06087';
   const isNear = place.distance < 0.01
-  
   const [details, setDetails] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   const getCurrentTime = () => {
@@ -76,6 +76,7 @@ const Card = ({ place, url, fetchList }) => {
     fetchPatch();
     checkinPush();
     fetchList();
+    setModalVisible(!modalVisible);
   }
 
   const checkinPush = () => {
@@ -149,9 +150,30 @@ const Card = ({ place, url, fetchList }) => {
     }
   }
 
+  const modal = <Modal
+    animationType='fade'
+    transparent={true}
+    visible={modalVisible}
+  >
+    <View style={styles.modalBg}>
+      <View style={styles.modal}>
+      <Text style={styles.modalPlace}>{place.name}:</Text>
+        <Text style={styles.modalText}>{checkingIn ? 'Checked Out' : `Checked In`}</Text>
+        <TouchableOpacity
+          style={styles.modalButton}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <Text style={styles.modalButtonText}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
-      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={[styles.cardbackground, {height: toggleCardHeight()}]}>
+      {modal}
+      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={[styles.cardbackground, { height: toggleCardHeight() }]}>
         <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
         <Text style={styles.heading}>{place.name}</Text>
         <Text style={styles.address}>{place.address.street}</Text>
@@ -160,6 +182,7 @@ const Card = ({ place, url, fetchList }) => {
         {details && (<Text style={styles.description}>{place.info.description}</Text>)}
         {displayHighlights()}
         <View style={styles.overlay} />
+        {!place.launched && (<View style={styles.comingSoon}><Text style={styles.comingSoonText}>Coming Soon</Text></View>)}
         {renderButton()}
       </ImageBackground>
     </TouchableOpacity>
@@ -167,6 +190,44 @@ const Card = ({ place, url, fetchList }) => {
 }
 
 const styles = StyleSheet.create({
+  modalPlace: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  modalText: {
+    fontSize: 20
+  },
+  modalButtonText: {
+    fontSize: 16,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  modalButton: {
+    backgroundColor: '#FA8993',
+    position: 'absolute',
+    bottom: 0,
+    width: Dimensions.get('window').width - 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    padding: 10
+  },
+  modalBg: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    flex: 1,
+  },
+  modal: {
+    width: Dimensions.get('window').width - 70,
+    height: Dimensions.get('window').width - 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    alignSelf: 'center'
+  },
   cardbackground: {
     width: Dimensions.get('window').width - 100,
     marginTop: 25,
@@ -266,13 +327,25 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-
   description: {
     color: 'white',
     zIndex: 1,
     fontSize: 16,
     paddingTop: 15,
     paddingHorizontal: 5
+  },
+  comingSoon: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    borderRadius: 12,
+    zIndex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  comingSoonText: {
+    color: '#B6B6B6',
+    fontSize: 24,
+    fontWeight: 'bold'
   }
 })
 

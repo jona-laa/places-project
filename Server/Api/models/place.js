@@ -58,6 +58,10 @@ const placeSchema = new mongoose.Schema({
     currentUsers: {
         type: Number,
         required: true
+    },
+    launched: {
+        type: Boolean,
+        required: false
     }
 })
 

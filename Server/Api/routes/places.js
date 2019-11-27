@@ -66,7 +66,18 @@ router.patch('/places/:id', getPlace, async (req, res) => {
   } catch {
     res.status(400).json({ message: err.message })
   }
+})
 
+// set coming soon status
+router.patch('/places/launched/:id', getPlace, async (req, res) => {
+  res.place.launched = req.body.launched;
+
+  try {
+    const updatedPlace = await res.place.save()
+    res.json(updatedPlace)
+  } catch {
+    res.status(400).json({ message: err.message })
+  }
 })
 
 module.exports = router;
