@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   modalText: {
-    fontSize: 20
+    fontSize: 20,
+    paddingBottom: 36
   },
   modalButtonText: {
     fontSize: 16,

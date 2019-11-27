@@ -1,14 +1,16 @@
 import React, {useEffect} from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 import { setProfileData } from '../../redux/actions/profile'
+import { setLogin } from '../../redux/actions/login'
+
 
 const ProfileScreen = () => {
 
 
   const dispatch = useDispatch()
-  const { profile, checkingIn } = useSelector(state => state)
+  const { profile, checkingIn, login } = useSelector(state => state)
   const baseUrl = 'http://192.168.35.146:3000';
   const userID = '5dd50ab87153751890c06087';
 
@@ -29,6 +31,7 @@ const ProfileScreen = () => {
           Profile
       </Text>
       </View>
+      <Button title='LOGOUT' onPress={() => dispatch(setLogin(!login))} />
       <Text>{profile && profile.name.firstName}</Text>
       <Text>{profile && profile.name.lastName}</Text>
       <Text>{profile && profile.contactInfo.phone}</Text>
