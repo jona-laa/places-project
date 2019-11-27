@@ -45,7 +45,7 @@ const ProfileScreen = () => {
       <View style={styles.infoContainer}>
       <Image
         style={styles.profilePic}
-        source={require('../../assets/logo-places-black.png')}
+        source={require('../../assets/avatar-icon.png')}
       />
         <Text style={styles.name}>{profile && profile.name.firstName}</Text>
         <Text style={styles.name}>{profile && profile.name.lastName}</Text>
@@ -53,8 +53,8 @@ const ProfileScreen = () => {
         <Text style={styles.contact}>{profile && profile.contactInfo.email}</Text>
       </View>
       {profile && checkingIn ?
-      <Text>Currently not checked in anywhere</Text> :
-      <Text>Checked in at {currentPlace }</Text>}
+      <Text style={styles.checkinStatus}>Not checked in</Text> :
+      <Text style={styles.checkinStatus}>Checked in at {currentPlace }</Text>}
     </View>
   )
 }
@@ -66,12 +66,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 150,
     height: 150,
-    borderWidth: 1
+    borderWidth: 1,
+    marginBottom: 30
+  },
+  checkinStatus:
+  {
+    marginTop: 70
+
   },
   infoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.25
+    marginTop: Dimensions.get('window').height * 0.05
   },
   profileScreen: {
     marginTop: Constants.statusBarHeight + 10,
