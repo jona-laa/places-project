@@ -8,7 +8,7 @@ const Card = ({ place, url, fetchList }) => {
   const dispatch = useDispatch();
   const imgURL = url + place.imgURL;
   const userID = '5dd50ab87153751890c06087';
-  const isNear = place.distance < 0.01
+  const isNear = place.distance < 0.1
   const [details, setDetails] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
 

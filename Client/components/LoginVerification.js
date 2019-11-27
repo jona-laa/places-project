@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from './Login';
 import NavBar from './NavBar';
-import {View} from 'react-native'
+import { View } from 'react-native'
 import { useSelector,Provider } from 'react-redux'
 import { store } from '../redux/store/store';
 

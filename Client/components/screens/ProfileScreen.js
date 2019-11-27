@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { View, Text, StyleSheet, Dimensions, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 import { setProfileData } from '../../redux/actions/profile'
@@ -10,14 +10,22 @@ const ProfileScreen = () => {
 
 
   const dispatch = useDispatch()
-  const { profile, checkingIn, login } = useSelector(state => state)
+  const { profile, checkingIn, login, places } = useSelector(state => state)
   const baseUrl = 'http://192.168.35.146:3000';
   const userID = '5dd50ab87153751890c06087';
+  const [currentPlace, setCurrentPlace] = useState(null)
 
   const getUserData = () => {
     fetch(`${baseUrl}/api/users/${userID}`)
       .then(res => res.json())
       .then(data => dispatch(setProfileData(data)))
+      .then(data => findPlaceById(data.profile.status.place))
+  }
+
+  const findPlaceById = (id) => {
+    const matchedPlace = places.places
+      .filter(place => place._id == id)
+      setCurrentPlace(matchedPlace[0].name)
   }
 
   useEffect(() => {
@@ -25,22 +33,46 @@ const ProfileScreen = () => {
   }, [checkingIn])
 
   return (
-<View style={styles.profileScreen}>
+    <View style={styles.profileScreen}>
       <View style={styles.headingText}>
         <Text style={styles.heading}>
           Profile
       </Text>
       </View>
-      <Button title='LOGOUT' onPress={() => dispatch(setLogin(!login))} />
-      <Text>{profile && profile.name.firstName}</Text>
-      <Text>{profile && profile.name.lastName}</Text>
-      <Text>{profile && profile.contactInfo.phone}</Text>
-      <Text>{profile && profile.contactInfo.email}</Text>
+      <TouchableOpacity activeOpacity={0.9} style={styles.logOutButton} onPress={() => dispatch(setLogin(!login))}>
+        <Text style={styles.logOutButtonText}>Log out</Text>
+      </TouchableOpacity>
+      <View style={styles.infoContainer}>
+      <Image
+        style={styles.profilePic}
+        source={require('../../assets/logo-places-black.png')}
+      />
+        <Text style={styles.name}>{profile && profile.name.firstName}</Text>
+        <Text style={styles.name}>{profile && profile.name.lastName}</Text>
+        <Text style={styles.contact}>{profile && profile.contactInfo.phone}</Text>
+        <Text style={styles.contact}>{profile && profile.contactInfo.email}</Text>
+      </View>
+      {profile && checkingIn ?
+      <Text>Currently not checked in anywhere</Text> :
+      <Text>Checked in at {currentPlace }</Text>}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  profilePic: {
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 150,
+    borderWidth: 1
+  },
+  infoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Dimensions.get('window').height * 0.25
+  },
   profileScreen: {
     marginTop: Constants.statusBarHeight + 10,
     alignItems: 'center'
@@ -56,6 +88,31 @@ const styles = StyleSheet.create({
   },
   headingText: {
     width: Dimensions.get('window').width
+  },
+  logOutButtonText: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+    zIndex: 1
+  },
+  logOutButton: {
+    backgroundColor: '#FA8993',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    paddingVertical: 9,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    position: 'absolute',
+    top: 30,
+    right: 20
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  contact: {
+    marginTop: 10
   }
 })
 
