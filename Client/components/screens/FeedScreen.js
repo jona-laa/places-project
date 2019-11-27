@@ -33,6 +33,7 @@ const FeedScreen = () => {
 
 const styles = StyleSheet.create({
   feedScreen: {
+    flex: 1,
     marginTop: Constants.statusBarHeight + 10,
     alignItems: 'center'
   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleCheckingIn } from '../redux/actions/checkingIn';
 
@@ -9,6 +9,7 @@ const Card = ({ place, url, fetchList }) => {
   const imgURL = url + place.imgURL;
   const userID = '5dd50ab87153751890c06087';
   const isNear = place.distance < 0.01
+  
   const [details, setDetails] = useState(false)
 
 
@@ -138,19 +139,19 @@ const Card = ({ place, url, fetchList }) => {
     }
   }
 
-  const toggleCardBackground = () => {
+  const toggleCardHeight = () => {
     if (details) {
-      return styles.cardbackgroundDetailed;
+      return Dimensions.get('window').width * 0.5 + 200;
     } else if (isNear && isOpen()) {
-      return styles.cardbackgroundNear;
+      return Dimensions.get('window').width * 0.5 + 40;
     } else {
-      return styles.cardbackgroundFar;
+      return Dimensions.get('window').width * 0.50;
     }
   }
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
-      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={toggleCardBackground()}>
+      <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={[styles.cardbackground, {height: toggleCardHeight()}]}>
         <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
         <Text style={styles.heading}>{place.name}</Text>
         <Text style={styles.address}>{place.address.street}</Text>
@@ -166,29 +167,8 @@ const Card = ({ place, url, fetchList }) => {
 }
 
 const styles = StyleSheet.create({
-  cardbackgroundDetailed: {
+  cardbackground: {
     width: Dimensions.get('window').width - 100,
-    height: Dimensions.get('window').width * 0.5 + 200,
-    marginTop: 25,
-    marginBottom: 25,
-    paddingTop: 10,
-    paddingRight: 16,
-    paddingBottom: 10,
-    paddingLeft: 16,
-  },
-  cardbackgroundNear: {
-    width: Dimensions.get('window').width - 100,
-    height: Dimensions.get('window').width * 0.5 + 40,
-    marginTop: 25,
-    marginBottom: 25,
-    paddingTop: 10,
-    paddingRight: 16,
-    paddingBottom: 10,
-    paddingLeft: 16,
-  },
-  cardbackgroundFar: {
-    width: Dimensions.get('window').width - 100,
-    height: Dimensions.get('window').width * 0.50,
     marginTop: 25,
     marginBottom: 25,
     paddingTop: 10,
