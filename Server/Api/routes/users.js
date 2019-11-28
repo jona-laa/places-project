@@ -68,4 +68,17 @@ router.patch('/users/:id/checkin', getUser, async (req, res) => {
   }
 })
 
+// update whole user
+router.patch('/users/update/:id', getUser, async (req, res) => {
+  Object.keys(req.body).forEach(key => { 
+  res.user[key] = req.body[key]})
+
+  try {
+    const updatedUser = await res.user.save()
+    res.json(updatedUser)
+  } catch {
+    res.status(400).json({ message: err.message })
+  }
+})
+
 module.exports = router

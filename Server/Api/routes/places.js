@@ -80,4 +80,17 @@ router.patch('/places/launched/:id', getPlace, async (req, res) => {
   }
 })
 
+// update whole place
+router.patch('/places/update/:id', getPlace, async (req, res) => {
+  Object.keys(req.body).forEach(key => { 
+  res.place[key] = req.body[key]})
+
+  try {
+    const updatedPlace = await res.place.save()
+    res.json(updatedPlace)
+  } catch {
+    res.status(400).json({ message: err.message })
+  }
+})
+
 module.exports = router
