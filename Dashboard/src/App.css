@@ -1,0 +1,93 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.header p {
+  font-size: 2em;
+  padding: 15px;
+}
+
+.nav-button {
+  width: 80px;
+  padding: 5px;
+}
+
+.content-box {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-box__buttons {
+  width: 180px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-box button {
+  width: 80px;
+  padding: 5px;
+}
+
+.main-nav__ul {
+  list-style: none;
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  padding: 10px;
+
+};
+
+.list {
+  display: flex;
+  width: 100%;
+}
+
+.list__title {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 0.5px solid black;
+}
+
+.list__title > h3 {
+ cursor: pointer;
+ -webkit-user-select: none;  
+ -moz-user-select: none;    
+ -ms-user-select: none;      
+ user-select: none;
+}
+
+button:hover {
+ background-color: pink;
+ cursor: pointer;
+}
+
+.form__row {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  padding: 3px;
+}
+
+input {
+  padding: 5px;
+  width: 300px;
+}
