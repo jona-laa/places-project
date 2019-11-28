@@ -1,6 +1,5 @@
-const User = require('../models/user');
-const Place = require('../models/place');
-
+const User = require('../models/user')
+const Place = require('../models/place')
 
 const getUser = async (req, res, next) => {
     try {
@@ -11,7 +10,6 @@ const getUser = async (req, res, next) => {
     } catch(err){
       return res.status(500).json({ message: err.message })
     }
-  
     res.user = user
     next()
   }

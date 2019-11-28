@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import Constants from 'expo-constants';
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import { setProfileData } from '../../redux/actions/profile'
 import { setLogin } from '../../redux/actions/login'
-
+import Constants from 'expo-constants'
 
 const ProfileScreen = () => {
   const dispatch = useDispatch()
   const { profile, checkingIn, login, places } = useSelector(state => state)
-  const baseUrl = 'http://192.168.35.146:3000';
-  const userID = '5dd50ab87153751890c06087';
   const [currentPlace, setCurrentPlace] = useState(null)
+  const baseUrl = 'http://192.168.35.146:3000'
+  const userID = '5dd50ab87153751890c06087'
 
   const getUserData = () => {
     fetch(`${baseUrl}/api/users/${userID}`)
@@ -23,7 +22,7 @@ const ProfileScreen = () => {
   const findPlaceById = (id) => {
     const matchedPlace = places.places
       .filter(place => place._id == id)
-      setCurrentPlace(matchedPlace[0].name)
+    setCurrentPlace(matchedPlace[0].name)
   }
 
   useEffect(() => {
@@ -33,26 +32,28 @@ const ProfileScreen = () => {
   return (
     <View style={styles.profileScreen}>
       <View style={styles.headingText}>
-        <Text style={styles.heading}>
-          Profile
-      </Text>
+        <Text style={styles.heading}>Profile</Text>
       </View>
-      <TouchableOpacity activeOpacity={0.9} style={styles.logOutButton} onPress={() => dispatch(setLogin(!login))}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        style={styles.logOutButton}
+        onPress={() => dispatch(setLogin(!login))}
+      >
         <Text style={styles.logOutButtonText}>Log out</Text>
       </TouchableOpacity>
       <View style={styles.infoContainer}>
-      <Image
-        style={styles.profilePic}
-        source={require('../../assets/avatar-icon.png')}
-      />
+        <Image
+          style={styles.profilePic}
+          source={require('../../assets/avatar-icon.png')}
+        />
         <Text style={styles.name}>{profile && profile.name.firstName}</Text>
         <Text style={styles.name}>{profile && profile.name.lastName}</Text>
         <Text style={styles.contact}>{profile && profile.contactInfo.phone}</Text>
         <Text style={styles.contact}>{profile && profile.contactInfo.email}</Text>
       </View>
       {profile && checkingIn ?
-      <Text style={styles.checkinStatus}>Not checked in</Text> :
-      <Text style={styles.checkinStatus}>Checked in at {currentPlace }</Text>}
+        <Text style={styles.checkinStatus}>Not checked in</Text> :
+        <Text style={styles.checkinStatus}>Checked in at {currentPlace}</Text>}
     </View>
   )
 }
@@ -64,13 +65,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 150,
     height: 150,
-    borderWidth: 1,
     marginBottom: 30
   },
-  checkinStatus:
-  {
+  checkinStatus: {
     marginTop: 70
-
   },
   infoContainer: {
     alignItems: 'center',
@@ -120,4 +118,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ProfileScreen;
+export default ProfileScreen

@@ -6,25 +6,29 @@ import Constants from 'expo-constants'
 import PopUpWindow from './PopUpWindow'
 
 const Login = () => {
-  const loggedIn = useSelector(state => state.login);
+  const loggedIn = useSelector(state => state.login)
   const dispatch = useDispatch()
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
   const [modalVisible, setModalVisible] = useState(false)
 
   const updateLogin = () => {
-    if (/[u|U]ser@joinplaces.co/.test(username) && password === '123457') {
-    dispatch(setLogin(!loggedIn))
-    } else {
-      setModalVisible(!modalVisible)
-    }
-    console.log(loggedIn)
+    // if (/[u|U]ser@joinplaces.co/.test(username) && password === '123457') {
+      dispatch(setLogin(!loggedIn))
+    // } else {
+    //   setModalVisible(!modalVisible)
+    // }
   }
 
   return (
     <View style={styles.view}>
-      <PopUpWindow modalVisible={modalVisible} setModalVisible={setModalVisible} message='Incorrect username or password' />
-      <Image style={styles.logo}
+      <PopUpWindow
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        message='Incorrect username or password'
+      />
+      <Image
+        style={styles.logo}
         source={require('../assets/logo-places-black.png')}
       />
       <TextInput
@@ -32,22 +36,30 @@ const Login = () => {
         placeholder='Username'
         onFocus={() => setUsername('')}
         onChangeText={text => setUsername(text)}
-        value={username} />
+        value={username}
+      />
       <TextInput
         style={styles.logInTextInput}
         placeholder='Password'
         onFocus={() => setPassword('')}
         onChangeText={text => setPassword(text)}
         value={password}
-        secureTextEntry={true} />
-      <TouchableOpacity  style={styles.logInButton} activeOpacity={0.9} onPress={() => updateLogin()}>
-        <Text style={styles.logInButtonText}>Log in</Text>
+        secureTextEntry={true}
+      />
+      <TouchableOpacity
+        style={styles.logInButton}
+        activeOpacity={0.9}
+        onPress={() => updateLogin()}
+      >
+      <Text style={styles.logInButtonText}>Log in</Text>
       </TouchableOpacity>
-      <Text style={styles.info}>Don't have an account? <Text
+      <Text style={styles.info}>Don't have an account? 
+      <Text
           style={styles.signup}
-          onPress={() => Linking.openURL('http://joinplaces.co/join')}>
-          Sign up here.
-        </Text></Text>
+          onPress={() => Linking.openURL('http://joinplaces.co/join')}
+        > Sign up here.
+        </Text>
+      </Text>
     </View>
   )
 }

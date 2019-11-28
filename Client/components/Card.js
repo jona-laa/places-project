@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleCheckingIn } from '../redux/actions/checkingIn';
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleCheckingIn } from '../redux/actions/checkingIn'
 import PopUpWindow from './PopUpWindow'
 
 const Card = ({ place, url, fetchList }) => {
-  const { checkingIn, expoPushToken } = useSelector(state => state);
-  const dispatch = useDispatch();
-  const imgURL = url + place.imgURL;
-  const userID = '5dd50ab87153751890c06087';
-  const isNear = place.distance < 0.1
+  const [modalVisible, setModalVisible] = useState(false)
   const [details, setDetails] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false);
+  const { checkingIn, expoPushToken } = useSelector(state => state)
+  const dispatch = useDispatch()
+  const imgURL = url + place.imgURL
+  const userID = '5dd50ab87153751890c06087'
+  const isNear = place.distance < 0.01
   const placeName = <Text style={styles.modalPlace}>{place.name}:</Text>
 
   const getCurrentTime = () => {
-    const date = new Date().toString();
-    return date.match(/\d{2}:\d{2}(?=:)/).join();
+    const date = new Date().toString()
+    return date.match(/\d{2}:\d{2}(?=:)/).join()
   }
 
   const isOpen = () => {
@@ -45,39 +45,39 @@ const Card = ({ place, url, fetchList }) => {
   }
 
   useInterval(() => {
-    checkIfClosingSoon();
+    checkIfClosingSoon()
   }, 60000)
 
   function useInterval(callback, delay) {
-    const savedCallback = useRef();
+    const savedCallback = useRef()
 
     useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
+      savedCallback.current = callback
+    }, [callback])
 
     useEffect(() => {
       function tick() {
-        savedCallback.current();
+        savedCallback.current()
       }
       if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
+        let id = setInterval(tick, delay)
+        return () => clearInterval(id)
       }
-    }, [delay]);
+    }, [delay])
   }
 
   const toggleDetailView = () => {
     setDetails(!details)
-    fetchList();
+    fetchList()
   }
 
   const dispatchToggleCheckingIn = () => {
-    dispatch(toggleCheckingIn(checkingIn));
-    setUserStatus();
-    fetchPatch();
-    checkinPush();
-    fetchList();
-    setModalVisible(!modalVisible);
+    dispatch(toggleCheckingIn(checkingIn))
+    setUserStatus()
+    fetchPatch()
+    checkinPush()
+    fetchList()
+    setModalVisible(!modalVisible)
   }
 
   const checkinPush = () => {
@@ -121,7 +121,7 @@ const Card = ({ place, url, fetchList }) => {
         'Content-Type': 'application/json',
       }
     })
-  };
+  }
 
   const renderButton = () => {
     if (isNear && isOpen()) {
@@ -133,28 +133,27 @@ const Card = ({ place, url, fetchList }) => {
 
   const displayHighlights = () => {
     if (details) {
-      return <Text style={styles.highlightsDetailed}> · {place.info.highlights.join('\n · ')}</Text>;
+      return <Text style={styles.highlightsDetailed}> · {place.info.highlights.join('\n · ')}</Text>
     } else if (isNear && isOpen()) {
-      return <Text style={styles.highlightsNear}>{place.info.highlights.join(' · ')}</Text>;
+      return <Text style={styles.highlightsNear}>{place.info.highlights.join(' · ')}</Text>
     } else {
-      return <Text style={styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>;
+      return <Text style={styles.highlightsFar}>{place.info.highlights.join(' · ')}</Text>
     }
   }
 
   const toggleCardHeight = () => {
     if (details) {
-      return Dimensions.get('window').width * 0.5 + 200;
+      return Dimensions.get('window').width * 0.5 + 200
     } else if (isNear && isOpen()) {
-      return Dimensions.get('window').width * 0.5 + 40;
+      return Dimensions.get('window').width * 0.5 + 40
     } else {
-      return Dimensions.get('window').width * 0.50;
+      return Dimensions.get('window').width * 0.50
     }
   }
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={() => toggleDetailView()}>
       <PopUpWindow modalVisible={modalVisible} setModalVisible={setModalVisible} message={checkingIn ? 'Checked Out' : `Checked In`} placeName={placeName} />
-
       <ImageBackground source={{ uri: imgURL }} imageStyle={{ borderRadius: 12 }} style={[styles.cardbackground, { height: toggleCardHeight() }]}>
         <Text style={[styles.hours, { backgroundColor: isOpen() ? 'rgba(102,225,137,0.45)' : 'rgba(225,102,102,0.45)' }]}>Open {place.hours.opens.split(':')[0]}-{place.hours.closes.split(':')[0]}</Text>
         <Text style={styles.heading}>{place.name}</Text>
@@ -289,6 +288,10 @@ const styles = StyleSheet.create({
   comingSoonText: {
     color: '#B6B6B6',
     fontSize: 24,
+    fontWeight: 'bold'
+  },
+  modalPlace: {
+    fontSize: 20,
     fontWeight: 'bold'
   }
 })

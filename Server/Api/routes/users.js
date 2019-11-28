@@ -1,23 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const User = require('../models/user');
+const express = require('express')
+const router = express.Router()
+const User = require('../models/user')
 
-const { getUser } = require('./middleware');
+const { getUser } = require('./middleware')
 
 // get all users
 router.get('/users', async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
+    const users = await User.find()
+    res.json(users)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
-});
+})
 
 // get one user
 router.get('/users/:id', getUser, async (req, res) => {
   res.json(res.user)
-});
+})
 
 // create one user
 router.post('/users', async (req, res) => {
@@ -33,7 +33,7 @@ router.post('/users', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
-});
+})
 
 // delete one user
 router.delete('/users/:id', getUser, async (req, res) => {
@@ -47,7 +47,7 @@ router.delete('/users/:id', getUser, async (req, res) => {
 
 //  add pushtoken to user
 router.patch('/users/:id/token', getUser, async (req, res) => {
-  res.user.pushToken = req.body.pushToken;
+  res.user.pushToken = req.body.pushToken
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)
@@ -58,8 +58,8 @@ router.patch('/users/:id/token', getUser, async (req, res) => {
 
 //  checkin user
 router.patch('/users/:id/checkin', getUser, async (req, res) => {
-  res.user.status.isCheckedIn = req.body.isCheckedIn;
-  res.user.status.place = req.body.place;
+  res.user.status.isCheckedIn = req.body.isCheckedIn
+  res.user.status.place = req.body.place
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)
@@ -68,4 +68,4 @@ router.patch('/users/:id/checkin', getUser, async (req, res) => {
   }
 })
 
-module.exports = router;
+module.exports = router

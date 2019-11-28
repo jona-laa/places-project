@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions } from 'react-native'
 
-const PopUpWindow = ({modalVisible, setModalVisible, message, placeName}) => {
+const PopUpWindow = ({ modalVisible, setModalVisible, message, placeName }) => {
   return (
     <Modal
       animationType='fade'
@@ -11,12 +11,12 @@ const PopUpWindow = ({modalVisible, setModalVisible, message, placeName}) => {
       <View style={styles.modalBg}>
         <View style={styles.modal}>
           {placeName}
-  <Text style={styles.modalText}>{message}</Text>
+          <Text style={styles.modalText}>{message}</Text>
           <TouchableOpacity
             activeOpacity={0.9}
             style={styles.modalButton}
             onPress={() => {
-              setModalVisible(!modalVisible);
+              setModalVisible(!modalVisible)
             }}>
             <Text style={styles.modalButtonText}>OK</Text>
           </TouchableOpacity>
@@ -27,10 +27,6 @@ const PopUpWindow = ({modalVisible, setModalVisible, message, placeName}) => {
 }
 
 const styles = StyleSheet.create({
-  modalPlace: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
   modalText: {
     fontSize: 16,
     paddingBottom: 36

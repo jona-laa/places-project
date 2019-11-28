@@ -1,9 +1,10 @@
-
 require('dotenv').config()
 
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const cors = require('cors')
+
 app.use('/images', express.static('images'))
 
 
@@ -13,6 +14,7 @@ db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to database'))
 
 app.use(express.json())
+app.use(cors())
 
 const placesRouter = require('./routes/places')
 app.use('/api', placesRouter)

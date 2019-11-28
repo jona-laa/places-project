@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 
 const FeedCard = ({ data: { item: { data: { message, title } } } }) => {
-
   return (
     <View style={styles.wrapper}>
-      <View style={styles.iconBg}><Text style={styles.icon}>{title.charAt(0)}</Text></View>
+      <View style={styles.iconBg}>
+        <Text style={styles.icon}>{title.charAt(0)}</Text>
+      </View>
       <View style={styles.pushMessage}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.message}>{message}</Text>
@@ -30,8 +31,7 @@ const styles = StyleSheet.create({
   message: {
     paddingLeft: 15
   },
-  iconBg:
-  {
+  iconBg: {
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: '#DF8187'
   },
-  icon:
-  {
+  icon: {
     fontSize: 36,
     color: 'white',
     fontWeight: '900'
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
   pushMessage: {
     justifyContent: 'center'
   }
-
 })
 
 export default FeedCard

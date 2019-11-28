@@ -1,16 +1,15 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
-import FeedCard from '../FeedCard';
-import Constants from 'expo-constants';
+import React from 'react'
+import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native'
+import { useSelector } from 'react-redux'
+import Constants from 'expo-constants'
+import FeedCard from '../FeedCard'
 
 const FeedScreen = () => {
-
-  const { notifications } = useSelector(state => state);
+  const { notifications } = useSelector(state => state)
 
   const filteredNotifications = () => {
-    return [... new Set(notifications)];
-  };
+    return [... new Set(notifications)]
+  }
 
   return (
     <View style={styles.feedScreen}>
@@ -19,19 +18,24 @@ const FeedScreen = () => {
           Feed
       </Text>
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={filteredNotifications()}
-        extraData={notifications}
-        refreshing={true}
-        keyExtractor={item => item.notificationId.toString()}
-        renderItem={(item) => <FeedCard data={item} />}
-      />
+      {notifications.length ?
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={filteredNotifications()}
+          extraData={notifications}
+          refreshing={true}
+          keyExtractor={item => item.notificationId.toString()}
+          renderItem={(item) => <FeedCard data={item} />}
+        /> : <Text style={styles.emptyFeed}>Empty Feed</Text>
+      }
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  emptyFeed: {
+    marginTop: Dimensions.get('window').height * 0.35
+  },
   feedScreen: {
     flex: 1,
     marginTop: Constants.statusBarHeight + 10,
@@ -51,4 +55,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default FeedScreen;
+export default FeedScreen

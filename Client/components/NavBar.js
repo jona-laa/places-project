@@ -1,13 +1,13 @@
-import React from 'react';
-import { createAppContainer } from 'react-navigation';  // Display component based on which tab
-import { createBottomTabNavigator } from 'react-navigation-tabs'; // create tab navbar
-import HomeScreen from './screens/HomeScreen';
-import FeedScreen from './screens/FeedScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import InfoScreen from './screens/InfoScreen';
-import { AntDesign } from '@expo/vector-icons';
+import React from 'react'
+import { createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation-tabs' 
+import HomeScreen from './screens/HomeScreen'
+import FeedScreen from './screens/FeedScreen'
+import ProfileScreen from './screens/ProfileScreen'
+import InfoScreen from './screens/InfoScreen'
+import { AntDesign } from '@expo/vector-icons'
 
-const TabNavigator = createBottomTabNavigator( // call function create navbar object
+const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreen,
     Feed: FeedScreen,
@@ -16,24 +16,24 @@ const TabNavigator = createBottomTabNavigator( // call function create navbar ob
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        let IconComponent = AntDesign;
-        let iconName;
+      tabBarIcon: ({ tintColor }) => {
+        const { routeName } = navigation.state
+        let IconComponent = AntDesign
+        let iconName
 
         switch (routeName) {
           case 'Home':
-            iconName = 'home';
-            break;
+            iconName = 'home'
+            break
           case 'Feed':
-            iconName = 'message1';
-            break;
+            iconName = 'message1'
+            break
           case 'Profile':
-            iconName = 'user';
-            break;
+            iconName = 'user'
+            break
           case 'Info':
-            iconName = 'infocirlceo';
-            break;
+            iconName = 'infocirlceo'
+            break
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />
       },
@@ -46,4 +46,4 @@ const TabNavigator = createBottomTabNavigator( // call function create navbar ob
   }
 )
 
-export default createAppContainer(TabNavigator);
+export default createAppContainer(TabNavigator)

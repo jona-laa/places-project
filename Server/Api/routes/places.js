@@ -1,23 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const Place = require('../models/place');
-const { getPlace } = require('./middleware');
+const express = require('express')
+const router = express.Router()
+const Place = require('../models/place')
+const { getPlace } = require('./middleware')
 
 
 // get all places
 router.get('/places', async (req, res) => {
   try {
-    const places = await Place.find();
-    res.json(places);
+    const places = await Place.find()
+    res.json(places)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
-});
+})
 
 // get one place
 router.get('/places/:id', getPlace, async (req, res) => {
   res.json(res.place)
-});
+})
 
 // create one place
 router.post('/places', async (req, res) => {
@@ -37,7 +37,7 @@ router.post('/places', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
-});
+})
 
 // delete one place
 router.delete('/places/:id', getPlace, async (req, res) => {
@@ -53,11 +53,11 @@ router.delete('/places/:id', getPlace, async (req, res) => {
 router.patch('/places/:id', getPlace, async (req, res) => {
 
   if (req.body.status.isCheckedIn === true) {
-    res.place.currentUsers = res.place.currentUsers + 1;
+    res.place.currentUsers = res.place.currentUsers + 1
   }
 
   if (req.body.status.isCheckedIn === false) {
-    res.place.currentUsers = res.place.currentUsers - 1;
+    res.place.currentUsers = res.place.currentUsers - 1
   }
 
   try {
@@ -70,7 +70,7 @@ router.patch('/places/:id', getPlace, async (req, res) => {
 
 // set coming soon status
 router.patch('/places/launched/:id', getPlace, async (req, res) => {
-  res.place.launched = req.body.launched;
+  res.place.launched = req.body.launched
 
   try {
     const updatedPlace = await res.place.save()
@@ -80,4 +80,4 @@ router.patch('/places/launched/:id', getPlace, async (req, res) => {
   }
 })
 
-module.exports = router;
+module.exports = router

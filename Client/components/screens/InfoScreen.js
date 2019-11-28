@@ -1,13 +1,6 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Linking,
-  Image
-} from 'react-native';
-import Constants from 'expo-constants';
+import React from 'react'
+import { View, Text, StyleSheet, Dimensions, Linking, Image } from 'react-native'
+import Constants from 'expo-constants'
 
 const InfoScreen = () => {
   return (
@@ -16,30 +9,30 @@ const InfoScreen = () => {
         <Text style={styles.heading}>About Places</Text>
       </View>
       <Text>
-        Places transforms under-utilized city space into a network of playful
-        coworking, creating a tribe like community of creatives and startups.
+        Places transforms under-utilized city space into a network of playful coworking, creating a tribe like community of creatives and startups.
         {'\n'}
         {'\n'}
       </Text>
       <Text>
-        Follow these steps to start using Places:{'\n'}
+        Follow these steps to start using Places:
+        {'\n'}
         {'\n'}
         {'\n'}
         <Text style={styles.bulletText}>1. </Text>Go to{' '}
         <Text
           style={{ color: '#DF8187' }}
-          onPress={() => Linking.openURL('http://joinplaces.co/join')}>
-          joinplaces.co/join
+          onPress={() => Linking.openURL('http://joinplaces.co/join')}>joinplaces.co/join
         </Text>
         {'\n'}
         {'\n'}
-        <Text style={styles.bulletText}>2. </Text>Enter your details and wait
-        for a call from us.{'\n'}
+        <Text style={styles.bulletText}>2. </Text>Enter your details and wait for a call from us.
         {'\n'}
-        <Text style={styles.bulletText}>3. </Text>If accepted, enter billing
-        details.{'\n'}
         {'\n'}
-        <Text style={styles.bulletText}>4. </Text>Welcome to Places!{'\n'}
+        <Text style={styles.bulletText}>3. </Text>If accepted, enter billing details.
+        {'\n'}
+        {'\n'}
+        <Text style={styles.bulletText}>4. </Text>Welcome to Places!
+        {'\n'}
       </Text>
       <Image
         style={styles.logo}
@@ -53,8 +46,8 @@ const InfoScreen = () => {
         Org. Nr: 559213-9694{'\n'}
       </Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   infoScreen: {
@@ -98,6 +91,6 @@ const styles = StyleSheet.create({
     bottom: 30,
     lineHeight: 20
   }
-});
+})
 
-export default InfoScreen;
+export default InfoScreen
