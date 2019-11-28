@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, Image, StyleSheet, Dimensions, TouchableOpacity, Linking, Modal } from 'react-native'
+import { View, Text, TextInput, Image, StyleSheet, Dimensions, TouchableOpacity, Linking } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { setLogin } from '../redux/actions/login'
-import Constants from 'expo-constants';
-
+import Constants from 'expo-constants'
+import PopUpWindow from './PopUpWindow'
 
 const Login = () => {
   const loggedIn = useSelector(state => state.login);
   const dispatch = useDispatch()
-
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
 
   const updateLogin = () => {
     if (/[u|U]ser@joinplaces.co/.test(username) && password === '123457') {
@@ -22,29 +21,9 @@ const Login = () => {
     console.log(loggedIn)
   }
 
-  const modal = <Modal
-    animationType='fade'
-    transparent={true}
-    visible={modalVisible}
-  >
-    <View style={styles.modalBg}>
-      <View style={styles.modal}>
-        <Text style={styles.modalText}>Incorrect username or password</Text>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={styles.modalButton}
-          onPress={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <Text style={styles.modalButtonText}>OK</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </Modal>
-
   return (
     <View style={styles.view}>
-      {modal}
+      <PopUpWindow modalVisible={modalVisible} setModalVisible={setModalVisible} message='Incorrect username or password' />
       <Image style={styles.logo}
         source={require('../assets/logo-places-black.png')}
       />

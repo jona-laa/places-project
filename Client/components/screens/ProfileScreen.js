@@ -7,8 +7,6 @@ import { setLogin } from '../../redux/actions/login'
 
 
 const ProfileScreen = () => {
-
-
   const dispatch = useDispatch()
   const { profile, checkingIn, login, places } = useSelector(state => state)
   const baseUrl = 'http://192.168.35.146:3000';
