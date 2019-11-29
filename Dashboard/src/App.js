@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Places from './components/Places'
 import Users from './components/Users'
 import './App.css';
@@ -11,10 +11,14 @@ function App() {
     setShowingPlaces(bool)
   }
 
+  useEffect(() => {
+    document.title = "Places Dashboard"
+  }, []);
+
   return (
     <div className='App'>
       <header className='header'>
-        <p>DASHBOARD</p>
+        <p>PLACES - DASHBOARD</p>
         <nav className='main-nav'>
           <ul className='main-nav__ul'>
             <li className='main-nav__ul__li' onClick={() => showPlaces(true)}><button className='nav-button'>Places</button></li>
